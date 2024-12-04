@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "Hash": "/EbsZWWbg5kUldhdHGga64ntlC/u15jsFPbFciX1qeU=",
+  "Source": "KafkaTest.Api",
+  "BasePath": "_content/KafkaTest.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "KafkaTest.Api\\wwwroot",
+      "Source": "KafkaTest.Api",
+      "ContentRoot": "C:\\Users\\alvaroa\\source\\repos\\KafkaTest\\KafkaTest.Api\\wwwroot\\",
+      "BasePath": "_content/KafkaTest.Api",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\alvaroa\\source\\repos\\KafkaTest\\KafkaTest.Api\\wwwroot\\Pelea_de_Monos.mp4",
+      "SourceId": "KafkaTest.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\alvaroa\\source\\repos\\KafkaTest\\KafkaTest.Api\\wwwroot\\",
+      "BasePath": "_content/KafkaTest.Api",
+      "RelativePath": "Pelea_de_Monos.mp4",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Pelea_de_Monos.mp4"
+    }
+  ]
+}

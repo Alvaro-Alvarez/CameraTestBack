@@ -11,6 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddTransient<VideoStreamService>();
+builder.Services.Configure<Configuration>(builder.Configuration.GetSection("Configuration"));
 
 #region Dependency injection
 DependencyConfig.AddRegistration(builder.Services);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Options;
 using OpenCvSharp;
 
 namespace KafkaTest.Api.Services
@@ -6,10 +7,12 @@ namespace KafkaTest.Api.Services
     public class VideoStreamService
     {
         private readonly IHubContext<VideoStreamHub> _hubContext;
+        public readonly Configuration _options;
 
-        public VideoStreamService(IHubContext<VideoStreamHub> hubContext)
+        public VideoStreamService(IHubContext<VideoStreamHub> hubContext, IOptions<Configuration> options)
         {
             _hubContext = hubContext;
+            _options = options.Value;
         }
 
         //public async Task StreamVideoMediaSource()
@@ -50,7 +53,7 @@ namespace KafkaTest.Api.Services
 
         public async Task StreamVideoMediaSource()
         {
-            var filePath = "C:\\Users\\alvaroa\\Desktop\\videos\\videocorto.mp4";
+            var filePath = $"C:\\Users\\alvaroa\\Desktop\\videos\\videocorto.mp4";
 
             // Información del video
             var fileInfo = new FileInfo(filePath);
@@ -117,7 +120,7 @@ namespace KafkaTest.Api.Services
 
         public async Task StreamVideoFrames()
         {
-            var filePath = "C:\\Users\\seleneo\\Desktop\\Videosa\\30s.mp4";
+            var filePath = $"{_options.Path}30s.mp4";
 
             using var videoCapture = new VideoCapture(filePath);
             if (!videoCapture.IsOpened())
@@ -147,14 +150,14 @@ namespace KafkaTest.Api.Services
                 await Task.Delay(delay);
             }
 
-            await StreamVideoFrames();
+            //await StreamVideoFrames();
             // Notificar al cliente que el streaming ha terminado
             //await _hubContext.Clients.All.SendAsync("StreamEnded");
         }
 
         public async Task StreamVideoFrames2()
         {
-            var filePath = "C:\\Users\\seleneo\\Desktop\\Videosa\\5m.mp4";
+            var filePath = $"{_options.Path}5m.mp4";
 
             using var videoCapture = new VideoCapture(filePath);
             if (!videoCapture.IsOpened())
@@ -184,14 +187,14 @@ namespace KafkaTest.Api.Services
                 await Task.Delay(delay);
             }
 
-            await StreamVideoFrames2();
+            //await StreamVideoFrames2();
             // Notificar al cliente que el streaming ha terminado
             //await _hubContext.Clients.All.SendAsync("StreamEnded");
         }
 
         public async Task StreamVideoFrames3()
         {
-            var filePath = "C:\\Users\\seleneo\\Desktop\\Videosa\\10m.mp4";
+            var filePath = $"{_options.Path}10m.mp4";
 
             using var videoCapture = new VideoCapture(filePath);
             if (!videoCapture.IsOpened())
@@ -220,14 +223,14 @@ namespace KafkaTest.Api.Services
                 // Simula el retraso entre frames
                 await Task.Delay(delay);
             }
-            await StreamVideoFrames3();
+            //await StreamVideoFrames3();
             // Notificar al cliente que el streaming ha terminado
             //await _hubContext.Clients.All.SendAsync("StreamEnded");
         }
 
         public async Task StreamVideoFrames4()
         {
-            var filePath = "C:\\Users\\seleneo\\Desktop\\Videosa\\1m.mp4";
+            var filePath = $"{_options.Path}1m.mp4";
 
             using var videoCapture = new VideoCapture(filePath);
             if (!videoCapture.IsOpened())
@@ -256,13 +259,13 @@ namespace KafkaTest.Api.Services
                 // Simula el retraso entre frames
                 await Task.Delay(delay);
             }
-            await StreamVideoFrames4();
+            //await StreamVideoFrames4();
             // Notificar al cliente que el streaming ha terminado
             //await _hubContext.Clients.All.SendAsync("StreamEnded");
         }
         public async Task StreamVideoFrames5()
         {
-            var filePath = "C:\\Users\\seleneo\\Desktop\\Videosa\\video1hs.mp4";
+            var filePath = $"{_options.Path}video1hs.mp4";
 
             using var videoCapture = new VideoCapture(filePath);
             if (!videoCapture.IsOpened())
@@ -291,14 +294,14 @@ namespace KafkaTest.Api.Services
                 // Simula el retraso entre frames
                 await Task.Delay(delay);
             }
-            await StreamVideoFrames5();
+            //await StreamVideoFrames5();
             // Notificar al cliente que el streaming ha terminado
             //await _hubContext.Clients.All.SendAsync("StreamEnded");
         }
 
         public async Task StreamVideoFrames6()
         {
-            var filePath = "C:\\Users\\seleneo\\Desktop\\Videosa\\video.mp4";
+            var filePath = $"{_options.Path}video.mp4";
 
             using var videoCapture = new VideoCapture(filePath);
             if (!videoCapture.IsOpened())
@@ -327,7 +330,7 @@ namespace KafkaTest.Api.Services
                 // Simula el retraso entre frames
                 await Task.Delay(delay);
             }
-            await StreamVideoFrames6();
+            //await StreamVideoFrames6();
             // Notificar al cliente que el streaming ha terminado
             //await _hubContext.Clients.All.SendAsync("StreamEnded");
         }

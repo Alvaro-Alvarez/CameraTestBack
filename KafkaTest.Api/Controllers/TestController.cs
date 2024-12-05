@@ -1,5 +1,6 @@
 ﻿using KafkaTest.Api.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace KafkaTest.Api.Controllers
 {
@@ -8,10 +9,18 @@ namespace KafkaTest.Api.Controllers
     public class TestController : ControllerBase
     {
         private readonly VideoStreamService _videoStreamService;
+        public readonly Configuration _options;
 
-        public TestController(VideoStreamService videoStreamService)
+        public TestController(VideoStreamService videoStreamService, IOptions<Configuration> options)
         {
             _videoStreamService = videoStreamService;
+            _options = options.Value;
+        }
+
+        [HttpGet("test")]
+        public async Task<ActionResult> test()
+        {
+            return Ok("hola");
         }
 
         [HttpGet("StreamVideoMediaSource")]
@@ -46,7 +55,7 @@ namespace KafkaTest.Api.Controllers
         public async Task<ActionResult> OnlyApi()
         {
             var BufferSize = 1024 * 1024;
-            var filePath = "C:\\Users\\alvaroa\\Desktop\\videos\\videolargo.mp4";
+            var filePath = $"{_options.Path}video.mp4";
             //var filePath = "C:\\Users\\alvaroa\\Desktop\\videos\\Pelea_de_Monos.mp4";
 
             if (string.IsNullOrEmpty(filePath) || !System.IO.File.Exists(filePath))
@@ -110,8 +119,8 @@ namespace KafkaTest.Api.Controllers
         public IActionResult StreamVideo()
         {
             // Aquí simulas obtener información del archivo basado en el ID (normalmente desde la base de datos).
-            var fileName = "sonic.mp4"; // Implementa esta lógica.
-            var filePath = Path.Combine(@"C:\Users\alvaroa\Desktop\videos", fileName);
+            var fileName = "video.mp4"; // Implementa esta lógica.
+            var filePath = Path.Combine(_options.Path, fileName);
 
             if (!System.IO.File.Exists(filePath))
             {
@@ -126,8 +135,8 @@ namespace KafkaTest.Api.Controllers
         public IActionResult StreamVideo2()
         {
             // Aquí simulas obtener información del archivo basado en el ID (normalmente desde la base de datos).
-            var fileName = "videocorto.mp4"; // Implementa esta lógica.
-            var filePath = Path.Combine(@"C:\Users\alvaroa\Desktop\videos", fileName);
+            var fileName = "video.mp4"; // Implementa esta lógica.
+            var filePath = Path.Combine(_options.Path, fileName);
 
             if (!System.IO.File.Exists(filePath))
             {
@@ -142,8 +151,8 @@ namespace KafkaTest.Api.Controllers
         public IActionResult StreamVideo3()
         {
             // Aquí simulas obtener información del archivo basado en el ID (normalmente desde la base de datos).
-            var fileName = "Pelea_de_Monos.mp4"; // Implementa esta lógica.
-            var filePath = Path.Combine(@"C:\Users\alvaroa\Desktop\videos", fileName);
+            var fileName = "10m.mp4"; // Implementa esta lógica.
+            var filePath = Path.Combine(_options.Path, fileName);
 
             if (!System.IO.File.Exists(filePath))
             {
@@ -153,5 +162,6 @@ namespace KafkaTest.Api.Controllers
             var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
             return File(fileStream, "video/mp4", enableRangeProcessing: true);
         }
+
     }
 }

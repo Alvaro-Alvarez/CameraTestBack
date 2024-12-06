@@ -40,14 +40,16 @@ namespace KafkaTest.Api.Controllers
         [HttpGet("StreamVideoFrames")]
         public async Task<ActionResult> StreamVideoFrames()
         {
-            await _videoStreamService.StreamVideoFrames();
+            var token = BackgroundTaskManager.GetToken();
+            await _videoStreamService.StreamVideoFrames(token);
             return Ok();
         }
 
         [HttpGet("InitAllFrames")]
         public async Task<ActionResult> InitAllFrames()
         {
-            await _videoStreamService.InitAllFrames();
+            var token = BackgroundTaskManager.GetToken();
+            await _videoStreamService.InitAllFrames(token);
             return Ok();
         }
 
@@ -113,13 +115,11 @@ namespace KafkaTest.Api.Controllers
             return new EmptyResult();
         }
 
-
-
         [HttpGet("streamRange")]
         public IActionResult StreamVideo()
         {
             // Aquí simulas obtener información del archivo basado en el ID (normalmente desde la base de datos).
-            var fileName = "video.mp4"; // Implementa esta lógica.
+            var fileName = "1.mp4"; // Implementa esta lógica.
             var filePath = Path.Combine(_options.Path, fileName);
 
             if (!System.IO.File.Exists(filePath))
@@ -135,7 +135,7 @@ namespace KafkaTest.Api.Controllers
         public IActionResult StreamVideo2()
         {
             // Aquí simulas obtener información del archivo basado en el ID (normalmente desde la base de datos).
-            var fileName = "video.mp4"; // Implementa esta lógica.
+            var fileName = "2.mp4"; // Implementa esta lógica.
             var filePath = Path.Combine(_options.Path, fileName);
 
             if (!System.IO.File.Exists(filePath))
@@ -151,7 +151,7 @@ namespace KafkaTest.Api.Controllers
         public IActionResult StreamVideo3()
         {
             // Aquí simulas obtener información del archivo basado en el ID (normalmente desde la base de datos).
-            var fileName = "10m.mp4"; // Implementa esta lógica.
+            var fileName = "3.mp4"; // Implementa esta lógica.
             var filePath = Path.Combine(_options.Path, fileName);
 
             if (!System.IO.File.Exists(filePath))
@@ -163,5 +163,12 @@ namespace KafkaTest.Api.Controllers
             return File(fileStream, "video/mp4", enableRangeProcessing: true);
         }
 
+
+        [HttpGet("DeleteAllThreads")]
+        public IActionResult DeleteAllThreads()
+        {
+            BackgroundTaskManager.CancelAllTasks();
+            return Ok(new { msg = "Hilos detenidos" });
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Options;
 using OpenCvSharp;
+using System.Threading;
 
 namespace KafkaTest.Api.Services
 {
@@ -118,9 +119,9 @@ namespace KafkaTest.Api.Services
             await _hubContext.Clients.All.SendAsync("StreamEnded");
         }
 
-        public async Task StreamVideoFrames()
+        public async Task StreamVideoFrames(CancellationToken cancellationToken)
         {
-            var filePath = $"{_options.Path}30s.mp4";
+            var filePath = $"{_options.Path}1.mp4";
 
             using var videoCapture = new VideoCapture(filePath);
             if (!videoCapture.IsOpened())
@@ -134,7 +135,7 @@ namespace KafkaTest.Api.Services
             var delay = 500 / frameRate; // Tiempo entre frames en ms
 
             using var mat = new Mat();
-            while (true)
+            while (true && !cancellationToken.IsCancellationRequested)
             {
                 videoCapture.Read(mat);
                 if (mat.Empty()) break; // No hay más frames, fin del video
@@ -149,16 +150,13 @@ namespace KafkaTest.Api.Services
                 // Simula el retraso entre frames
                 await Task.Delay(delay);
             }
-
-            //await StreamVideoFrames();
-            // Notificar al cliente que el streaming ha terminado
-            //await _hubContext.Clients.All.SendAsync("StreamEnded");
+            if (!cancellationToken.IsCancellationRequested)
+                await StreamVideoFrames(cancellationToken);
         }
 
-        public async Task StreamVideoFrames2()
+        public async Task StreamVideoFrames2(CancellationToken cancellationToken)
         {
-            var filePath = $"{_options.Path}5m.mp4";
-
+            var filePath = $"{_options.Path}2.mp4";
             using var videoCapture = new VideoCapture(filePath);
             if (!videoCapture.IsOpened())
             {
@@ -166,36 +164,25 @@ namespace KafkaTest.Api.Services
                 return;
             }
 
-            var frameRate = (int)videoCapture.Fps; // Frames por segundo del video
-            //var delay = frameRate; // Tiempo entre frames en ms
-            var delay = 500 / frameRate; // Tiempo entre frames en ms
+            var frameRate = (int)videoCapture.Fps;
+            var delay = 500 / frameRate;
 
             using var mat = new Mat();
-            while (true)
+            while (true && !cancellationToken.IsCancellationRequested)
             {
                 videoCapture.Read(mat);
-                if (mat.Empty()) break; // No hay más frames, fin del video
-
-                // Convierte el frame a un array de bytes (JPEG)
+                if (mat.Empty()) break;
                 var frameBytes = mat.ToBytes(".jpg");
                 var frameBase64 = Convert.ToBase64String(frameBytes);
-
-                // Enviar el frame al cliente
                 await _hubContext.Clients.All.SendAsync("ReceiveFrame2", frameBase64);
-
-                // Simula el retraso entre frames
                 await Task.Delay(delay);
             }
-
-            //await StreamVideoFrames2();
-            // Notificar al cliente que el streaming ha terminado
-            //await _hubContext.Clients.All.SendAsync("StreamEnded");
+            await StreamVideoFrames2(cancellationToken);
         }
 
-        public async Task StreamVideoFrames3()
+        public async Task StreamVideoFrames3(CancellationToken cancellationToken)
         {
-            var filePath = $"{_options.Path}10m.mp4";
-
+            var filePath = $"{_options.Path}3.mp4";
             using var videoCapture = new VideoCapture(filePath);
             if (!videoCapture.IsOpened())
             {
@@ -203,35 +190,25 @@ namespace KafkaTest.Api.Services
                 return;
             }
 
-            var frameRate = (int)videoCapture.Fps; // Frames por segundo del video
-            //var delay = frameRate; // Tiempo entre frames en ms
-            var delay = 500 / frameRate; // Tiempo entre frames en ms
+            var frameRate = (int)videoCapture.Fps;
+            var delay = 500 / frameRate;
 
             using var mat = new Mat();
-            while (true)
+            while (true && !cancellationToken.IsCancellationRequested)
             {
                 videoCapture.Read(mat);
-                if (mat.Empty()) break; // No hay más frames, fin del video
-
-                // Convierte el frame a un array de bytes (JPEG)
+                if (mat.Empty()) break;
                 var frameBytes = mat.ToBytes(".jpg");
                 var frameBase64 = Convert.ToBase64String(frameBytes);
-
-                // Enviar el frame al cliente
                 await _hubContext.Clients.All.SendAsync("ReceiveFrame3", frameBase64);
-
-                // Simula el retraso entre frames
                 await Task.Delay(delay);
             }
-            //await StreamVideoFrames3();
-            // Notificar al cliente que el streaming ha terminado
-            //await _hubContext.Clients.All.SendAsync("StreamEnded");
+            await StreamVideoFrames3(cancellationToken);
         }
 
-        public async Task StreamVideoFrames4()
+        public async Task StreamVideoFrames4(CancellationToken cancellationToken)
         {
-            var filePath = $"{_options.Path}1m.mp4";
-
+            var filePath = $"{_options.Path}4.mp4";
             using var videoCapture = new VideoCapture(filePath);
             if (!videoCapture.IsOpened())
             {
@@ -239,34 +216,24 @@ namespace KafkaTest.Api.Services
                 return;
             }
 
-            var frameRate = (int)videoCapture.Fps; // Frames por segundo del video
-            //var delay = frameRate; // Tiempo entre frames en ms
-            var delay = 500 / frameRate; // Tiempo entre frames en ms
+            var frameRate = (int)videoCapture.Fps;
+            var delay = 500 / frameRate;
 
             using var mat = new Mat();
-            while (true)
+            while (true && !cancellationToken.IsCancellationRequested)
             {
                 videoCapture.Read(mat);
-                if (mat.Empty()) break; // No hay más frames, fin del video
-
-                // Convierte el frame a un array de bytes (JPEG)
+                if (mat.Empty()) break;
                 var frameBytes = mat.ToBytes(".jpg");
                 var frameBase64 = Convert.ToBase64String(frameBytes);
-
-                // Enviar el frame al cliente
                 await _hubContext.Clients.All.SendAsync("ReceiveFrame4", frameBase64);
-
-                // Simula el retraso entre frames
                 await Task.Delay(delay);
             }
-            //await StreamVideoFrames4();
-            // Notificar al cliente que el streaming ha terminado
-            //await _hubContext.Clients.All.SendAsync("StreamEnded");
+            await StreamVideoFrames4(cancellationToken);
         }
-        public async Task StreamVideoFrames5()
+        public async Task StreamVideoFrames5(CancellationToken cancellationToken)
         {
-            var filePath = $"{_options.Path}video1hs.mp4";
-
+            var filePath = $"{_options.Path}5.mp4";
             using var videoCapture = new VideoCapture(filePath);
             if (!videoCapture.IsOpened())
             {
@@ -274,35 +241,25 @@ namespace KafkaTest.Api.Services
                 return;
             }
 
-            var frameRate = (int)videoCapture.Fps; // Frames por segundo del video
-            //var delay = frameRate; // Tiempo entre frames en ms
-            var delay = 500 / frameRate; // Tiempo entre frames en ms
+            var frameRate = (int)videoCapture.Fps;
+            var delay = 500 / frameRate;
 
             using var mat = new Mat();
-            while (true)
+            while (true && !cancellationToken.IsCancellationRequested)
             {
                 videoCapture.Read(mat);
-                if (mat.Empty()) break; // No hay más frames, fin del video
-
-                // Convierte el frame a un array de bytes (JPEG)
+                if (mat.Empty()) break;
                 var frameBytes = mat.ToBytes(".jpg");
                 var frameBase64 = Convert.ToBase64String(frameBytes);
-
-                // Enviar el frame al cliente
                 await _hubContext.Clients.All.SendAsync("ReceiveFrame5", frameBase64);
-
-                // Simula el retraso entre frames
                 await Task.Delay(delay);
             }
-            //await StreamVideoFrames5();
-            // Notificar al cliente que el streaming ha terminado
-            //await _hubContext.Clients.All.SendAsync("StreamEnded");
+            await StreamVideoFrames5(cancellationToken);
         }
 
-        public async Task StreamVideoFrames6()
+        public async Task StreamVideoFrames6(CancellationToken cancellationToken)
         {
-            var filePath = $"{_options.Path}video.mp4";
-
+            var filePath = $"{_options.Path}6.mp4";
             using var videoCapture = new VideoCapture(filePath);
             if (!videoCapture.IsOpened())
             {
@@ -310,40 +267,30 @@ namespace KafkaTest.Api.Services
                 return;
             }
 
-            var frameRate = (int)videoCapture.Fps; // Frames por segundo del video
-            //var delay = frameRate; // Tiempo entre frames en ms
-            var delay = 500 / frameRate; // Tiempo entre frames en ms
+            var frameRate = (int)videoCapture.Fps;
+            var delay = 500 / frameRate;
 
             using var mat = new Mat();
-            while (true)
+            while (true && !cancellationToken.IsCancellationRequested)
             {
                 videoCapture.Read(mat);
-                if (mat.Empty()) break; // No hay más frames, fin del video
-
-                // Convierte el frame a un array de bytes (JPEG)
+                if (mat.Empty()) break;
                 var frameBytes = mat.ToBytes(".jpg");
                 var frameBase64 = Convert.ToBase64String(frameBytes);
-
-                // Enviar el frame al cliente
                 await _hubContext.Clients.All.SendAsync("ReceiveFrame6", frameBase64);
-
-                // Simula el retraso entre frames
                 await Task.Delay(delay);
             }
-            //await StreamVideoFrames6();
-            // Notificar al cliente que el streaming ha terminado
-            //await _hubContext.Clients.All.SendAsync("StreamEnded");
+            await StreamVideoFrames6(cancellationToken);
         }
 
-        public async Task InitAllFrames()
+        public async Task InitAllFrames(CancellationToken cancellationToken)
         {
-            StreamVideoFrames();
-            StreamVideoFrames2();
-            StreamVideoFrames3();
-            StreamVideoFrames4();
-            StreamVideoFrames5();
-            StreamVideoFrames6();
-
+            StreamVideoFrames(cancellationToken);
+            StreamVideoFrames2(cancellationToken);
+            StreamVideoFrames3(cancellationToken);
+            StreamVideoFrames4(cancellationToken);
+            StreamVideoFrames5(cancellationToken);
+            StreamVideoFrames6(cancellationToken);
         }
     }
 }
